@@ -6,14 +6,14 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    color: #333;
+    background-color: #f5f1e8; /* απαλό μπεζ */
+    color: #111; /* μαύρο */
 }
 
 /* Header */
 header {
-    background-color: #003366;
-    color: white;
+    background-color: #111; /* μαύρο */
+    color: #f5f1e8; /* μπεζ-άσπρο */
     padding: 20px;
 }
 
@@ -28,12 +28,13 @@ nav ul {
 }
 
 nav a {
-    color: white;
+    color: #f5f1e8; /* μπεζ */
     text-decoration: none;
 }
 
 nav a:hover {
     text-decoration: underline;
+    color: #ffffff; /* άσπρο */
 }
 
 /* Main */
@@ -43,6 +44,7 @@ main {
 
 .dashboard h2 {
     margin-bottom: 30px;
+    color: #111;
 }
 
 /* Cards */
@@ -52,12 +54,13 @@ main {
 }
 
 .card {
-    background: white;
+    background: #ffffff; /* άσπρο */
     padding: 20px;
     width: 250px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     text-align: center;
+    border: 1px solid #e5dfd3; /* απαλό μπεζ περίγραμμα */
 }
 
 .card h3 {
@@ -73,21 +76,22 @@ main {
 button {
     padding: 10px 15px;
     border: none;
-    background-color: #003366;
-    color: white;
+    background-color: #111; /* μαύρο */
+    color: #ffffff; /* άσπρο */
     cursor: pointer;
     border-radius: 5px;
 }
 
 button:hover {
-    background-color: #0055aa;
+    background-color: #cbbfa8; /* μπεζ */
+    color: #111; /* μαύρο */
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #ddd;
+    background-color: #e5dfd3; /* μπεζ */
     margin-top: 40px;
+    color: #111;
 }
-
