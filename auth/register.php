@@ -40,15 +40,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
+        // safest behavior: assign explicit default role for new registrations
+        // and avoid the NOT NULL constraint failure on users.role.
+        $defaultRole = 'candidate';
+
         $stmt = $pdo->prepare("
-            INSERT INTO users (username, email, password_hash)
-            VALUES (:username, :email, :password)
+            INSERT INTO users (username, email, password_hash, role)
+            VALUES (:username, :email, :password, :role)
         ");
 
         $stmt->execute([
             'username' => $username,
             'email' => $email,
-            'password' => $hash
+            'password' => $hash,
+            'role' => $defaultRole
         ]);
 
         header("Location: login.php?registered=1");

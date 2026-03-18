@@ -12,8 +12,9 @@ if (!isset($_SESSION["user_id"])) {
 //  (search)
 $keyword = $_GET["keyword"] ?? "";
 
-// QUERY με prepared statement
-$sql = "SELECT * FROM applications WHERE title LIKE :kw";
+// Οι application columns στο schema είναι course/department/status
+// γι' αυτό ο / η keyword search γίνεται σε course και department.
+$sql = "SELECT * FROM applications WHERE course LIKE :kw OR department LIKE :kw";
 $stmt = $pdo->prepare($sql);
 
 $stmt->execute([

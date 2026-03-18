@@ -3,7 +3,7 @@
 $host = "localhost";
 $dbname = "tepak_ee";
 $username = "root";
-$password = "";
+$password = "MySQLuserBRO!1!";
 
 try {
 
@@ -15,6 +15,6 @@ try {
 
 } catch(PDOException $e){
 
-    die("Database connection failed");
+    die("Database connection failed: " . $e->getMessage());
 
 }
