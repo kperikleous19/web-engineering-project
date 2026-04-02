@@ -47,7 +47,7 @@ $applications = $stmt->fetchAll();
     <input 
         type="text" 
         name="keyword" 
-        placeholder="Search by title..." 
+        placeholder="Search by course or department..." 
         value="<?= htmlspecialchars($keyword) ?>"
     >
     <button type="submit">Search</button>
@@ -62,15 +62,15 @@ $applications = $stmt->fetchAll();
 
 <table border="1" cellpadding="10">
     <tr>
-        <th>Title</th>
-        <th>Description</th>
+        <th>Course</th>
+        <th>Department</th>
         <th>Status</th>
     </tr>
 
     <?php foreach ($applications as $app): ?>
     <tr>
-        <td><?= htmlspecialchars($app["title"]) ?></td>
-        <td><?= htmlspecialchars($app["description"]) ?></td>
+        <td><?= htmlspecialchars($app["course"]) ?></td>
+        <td><?= htmlspecialchars($app["department"]) ?></td>
         <td><?= htmlspecialchars($app["status"]) ?></td>
     </tr>
     <?php endforeach; ?>
