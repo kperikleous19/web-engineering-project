@@ -14,11 +14,13 @@ $keyword = $_GET["keyword"] ?? "";
 
 // Οι application columns στο schema είναι course/department/status
 // γι' αυτό ο / η keyword search γίνεται σε course και department.
-$sql = "SELECT * FROM applications WHERE course LIKE :kw OR department LIKE :kw";
+$sql = "SELECT * FROM applications WHERE course LIKE :kw1 OR department LIKE :kw2";
 $stmt = $pdo->prepare($sql);
 
+$kw = "%" . $keyword . "%";
 $stmt->execute([
-    'kw' => "%" . $keyword . "%"
+    'kw1' => $kw,
+    'kw2' => $kw
 ]);
 
 $applications = $stmt->fetchAll();
@@ -27,6 +29,8 @@ $applications = $stmt->fetchAll();
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Applications List</title>
 </head>
 <body>

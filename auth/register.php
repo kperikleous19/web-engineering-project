@@ -12,30 +12,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // VALIDATION
     if (empty($username) || empty($email) || empty($password) || empty($confirm)) {
-        $errors[] = "All fields are required.";
+        $errors[] = "Όλα τα πεδία είναι υποχρεωτικά.";
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Invalid email format.";
+        $errors[] = "Μη έγκυρη μορφή email.";
     }
 
     if (strlen($password) < 8) {
-        $errors[] = "Password must be at least 8 characters.";
+        $errors[] = "Ο κωδικός πρέπει να έχει τουλάχιστον 8 χαρακτήρες.";
     }
 
     if ($password !== $confirm) {
-        $errors[] = "Passwords do not match.";
-    }
-
-    // CHECK IF EMAIL EXISTS
-    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
-    $stmt->execute(['email' => $email]);
-
-    if ($stmt->fetch()) {
-        $errors[] = "Email already exists.";
+        $errors[] = "Οι κωδικοί δεν ταιριάζουν.";
     }
 
     // INSERT USER
+    if (empty($errors)) {
+
+        // CHECK IF EMAIL EXISTS (only runs when all basic validation passes)
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+
+        if ($stmt->fetch()) {
+            $errors[] = "Το email χρησιμοποιείται ήδη.";
+        }
+    }
+
     if (empty($errors)) {
 
         $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -65,11 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 </head>
 <body>
 
-<h2>Register</h2>
+<h2>Εγγραφή</h2>
 
 <!-- ERRORS -->
 <?php if (!empty($errors)): ?>
@@ -82,23 +87,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <form method="POST">
 
-    <label>Username:</label><br>
+    <label>Όνομα χρήστη:</label><br>
     <input type="text" name="username" required><br><br>
 
     <label>Email:</label><br>
     <input type="email" name="email" required><br><br>
 
-    <label>Password:</label><br>
+    <label>Κωδικός:</label><br>
     <input type="password" name="password" required><br><br>
 
-    <label>Confirm Password:</label><br>
+    <label>Επιβεβαίωση κωδικού:</label><br>
     <input type="password" name="confirm" required><br><br>
 
-    <button type="submit">Register</button>
+    <button type="submit">Εγγραφή</button>
 
 </form>
 
-<p>Already have an account? <a href="login.php">Login</a></p>
+<p>Έχετε ήδη λογαριασμό; <a href="login.php">Σύνδεση</a></p>
 
 </body>
 </html>

@@ -1,9 +1,9 @@
 <?php
 
-$host = "localhost";
+$host = "127.0.0.1";
 $dbname = "tepak_ee";
 $username = "root";
-$password = "MySQLuserBRO!1!";
+$password = "";
 
 try {
 
