@@ -36,11 +36,11 @@ $registered = isset($_GET['registered']) && $_GET['registered'] === '1';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Σύνδεση</title>
 </head>
 <body>
 
-<h2>Login</h2>
+<h2>Σύνδεση</h2>
 
 <?php if ($registered): ?>
     <p style="color:green;">Εγγραφή επιτυχής, συνδεθείτε τώρα.</p>
@@ -54,10 +54,10 @@ $registered = isset($_GET['registered']) && $_GET['registered'] === '1';
     <label>Email:</label><br>
     <input type="email" name="email" required><br><br>
 
-    <label>Password:</label><br>
+    <label>Κωδικός:</label><br>
     <input type="password" name="password" required><br><br>
 
-    <button type="submit">Login</button>
+    <button type="submit">Σύνδεση</button>
 </form>
 
 <p>Δεν έχετε λογαριασμό; <a href="register.php">Εγγραφή</a></p>

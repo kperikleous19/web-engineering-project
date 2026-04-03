@@ -3,7 +3,7 @@
 $host = "127.0.0.1";
 $dbname = "tepak_ee";
 $username = "root";
-$password = "";
+$password = "MySQLuserBRO!1!";
 
 try {
 

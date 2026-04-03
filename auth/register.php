@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    header("Location: ../modules/dashboard.php");
+    exit;
+}
+
 require_once "../includes/db.php";
 
 $errors = [];
@@ -70,13 +77,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Εγγραφή</title>
 </head>
 <body>
 
 <h2>Εγγραφή</h2>
 
-<!-- ERRORS -->
+
 <?php if (!empty($errors)): ?>
     <ul style="color:red;">
         <?php foreach ($errors as $error): ?>
