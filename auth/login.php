@@ -20,7 +20,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["username"] = $user["username"];
         $_SESSION["role"] = $user["role"];
 
-        header("Location: ../modules/dashboard.php");
+        switch ($user["role"]) {
+            case "admin":
+                header("Location: ../admin/dashboard.php");
+                break;
+            case "candidate":
+            case "evaluator":
+                header("Location: ../recruitment/dashboard.php");
+                break;
+            case "hr":
+                header("Location: ../enrollment/dashboard.php");
+                break;
+            default:
+                header("Location: ../modules/dashboard.php");
+        }
         exit;
 
     } else {
