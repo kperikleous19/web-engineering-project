@@ -45,35 +45,42 @@ $registered = isset($_GET['registered']) && $_GET['registered'] === '1';
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Σύνδεση</title>
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
-<h2>Σύνδεση</h2>
+<div class="auth-wrapper">
+    <div class="auth-box">
+        <h2>Σύνδεση</h2>
 
-<?php if ($registered): ?>
-    <p style="color:green;">Εγγραφή επιτυχής, συνδεθείτε τώρα.</p>
-<?php endif; ?>
+        <?php if ($registered): ?>
+            <div class="alert-success">Εγγραφή επιτυχής! Συνδεθείτε τώρα.</div>
+        <?php endif; ?>
 
-<?php if (!empty($error)): ?>
-    <p style="color:red;"><?= htmlspecialchars($error) ?></p>
-<?php endif; ?>
+        <?php if (!empty($error)): ?>
+            <div class="alert-error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
 
-<form method="POST">
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
+        <form method="POST">
+            <label>Email:</label>
+            <input type="email" name="email" required>
 
-    <label>Κωδικός:</label><br>
-    <input type="password" name="password" required><br><br>
+            <label>Κωδικός:</label>
+            <input type="password" name="password" required>
 
-    <button type="submit">Σύνδεση</button>
-</form>
+            <button type="submit">Σύνδεση</button>
+        </form>
 
-<p>Δεν έχετε λογαριασμό; <a href="register.php">Εγγραφή</a></p>
+        <div class="auth-link">
+            Δεν έχετε λογαριασμό; <a href="register.php">Εγγραφή</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

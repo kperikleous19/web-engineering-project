@@ -27,61 +27,65 @@ $applications = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applications List</title>
+    <title>Λίστα Αιτήσεων</title>
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
-<h1>Applications</h1>
+<header>
+    <h1>Λίστα Αιτήσεων</h1>
+    <div class="user-info"><?= htmlspecialchars($_SESSION["username"]) ?></div>
+</header>
 
-<p>
-    Welcome, <strong><?= htmlspecialchars($_SESSION["username"]) ?></strong>
-</p>
+<nav>
+    <a href="dashboard.php">Dashboard</a>
+    <a href="../auth/logout.php">Αποσύνδεση</a>
+</nav>
 
-<a href="dashboard.php">⬅ Back to Dashboard</a> |
-<a href="../auth/logout.php">Logout</a>
+<main>
+    <form method="GET" class="search-bar">
+        <input
+            type="text"
+            name="keyword"
+            placeholder="Αναζήτηση με μάθημα ή τμήμα..."
+            value="<?= htmlspecialchars($keyword) ?>"
+        >
+        <button type="submit">Αναζήτηση</button>
+    </form>
 
-<hr>
+    <?php if (empty($applications)): ?>
+        <p style="margin-top:20px; color:#555;">Δεν βρέθηκαν αποτελέσματα.</p>
+    <?php else: ?>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>Μάθημα</th>
+                <th>Τμήμα</th>
+                <th>Κατάσταση</th>
+            </tr>
+            <?php foreach ($applications as $app): ?>
+            <tr>
+                <td><?= htmlspecialchars($app["course"]) ?></td>
+                <td><?= htmlspecialchars($app["department"]) ?></td>
+                <td>
+                    <span class="badge badge-<?= htmlspecialchars($app["status"]) ?>">
+                        <?= htmlspecialchars($app["status"]) ?>
+                    </span>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+    <?php endif; ?>
+</main>
 
-
-<form method="GET">
-    <input 
-        type="text" 
-        name="keyword" 
-        placeholder="Search by course or department..." 
-        value="<?= htmlspecialchars($keyword) ?>"
-    >
-    <button type="submit">Search</button>
-</form>
-
-<br>
-
-
-<?php if (empty($applications)): ?>
-    <p>No results found.</p>
-<?php else: ?>
-
-<table border="1" cellpadding="10">
-    <tr>
-        <th>Course</th>
-        <th>Department</th>
-        <th>Status</th>
-    </tr>
-
-    <?php foreach ($applications as $app): ?>
-    <tr>
-        <td><?= htmlspecialchars($app["course"]) ?></td>
-        <td><?= htmlspecialchars($app["department"]) ?></td>
-        <td><?= htmlspecialchars($app["status"]) ?></td>
-    </tr>
-    <?php endforeach; ?>
-
-</table>
-
-<?php endif; ?>
+<footer>
+    <p>Σύστημα Διαχείρισης Ειδικών Επιστημόνων &mdash; ΤΕΠΑΚ</p>
+</footer>
 
 </body>
 </html>

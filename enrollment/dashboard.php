@@ -16,13 +16,13 @@ if (!in_array($_SESSION['role'], ['admin', 'hr'])) {
 <head>
   <meta charset="UTF-8">
   <title>Enrollment Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
 <header>
-  <h1>Enrollment Dashboard</h1>
-  <p>Καλώς ήρθατε, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong></p>
+  <h1>Enrollment Module</h1>
+  <div class="user-info"><?= htmlspecialchars($_SESSION['username']) ?> &mdash; <?= htmlspecialchars($_SESSION['role']) ?></div>
 </header>
 
 <nav>
@@ -31,31 +31,34 @@ if (!in_array($_SESSION['role'], ['admin', 'hr'])) {
 </nav>
 
 <main>
-  <section class="cards">
+  <div class="cards">
 
     <div class="card">
+      <div class="card-icon">🔗</div>
       <h2>LMS Sync</h2>
       <p>Έλεγχος πρόσβασης στο Moodle και διαχείριση πρόσβασης σε μαθήματα.</p>
       <button>Άνοιγμα</button>
     </div>
 
     <div class="card">
+      <div class="card-icon">🔄</div>
       <h2>Full Sync</h2>
       <p>Πλήρης συγχρονισμός χρηστών και ρυθμίσεις αυτόματου συγχρονισμού.</p>
       <button>Άνοιγμα</button>
     </div>
 
     <div class="card">
+      <div class="card-icon">📊</div>
       <h2>Report</h2>
       <p>Στατιστικά πρόσβασης στο Moodle και αναφορές μαθημάτων χωρίς διδάσκοντα.</p>
       <button>Άνοιγμα</button>
     </div>
 
-  </section>
+  </div>
 </main>
 
 <footer>
-  <p>Web Engineering Project – Enrollment Module</p>
+  <p>Σύστημα Διαχείρισης Ειδικών Επιστημόνων &mdash; ΤΕΠΑΚ</p>
 </footer>
 
 </body>

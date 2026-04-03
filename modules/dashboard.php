@@ -9,34 +9,40 @@ if (!isset($_SESSION["user_id"])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
-<h1>Dashboard</h1>
+<header>
+    <h1>Dashboard</h1>
+    <div class="user-info">
+        <?= htmlspecialchars($_SESSION["username"]) ?> &mdash; <?= htmlspecialchars($_SESSION["role"]) ?>
+    </div>
+</header>
 
-<p>
-    Welcome, 
-    <strong><?= htmlspecialchars($_SESSION["username"]) ?></strong>
-</p>
+<nav>
+    <a href="list.php">Λίστα Αιτήσεων</a>
+    <a href="../auth/logout.php">Αποσύνδεση</a>
+</nav>
 
-<p>
-    Role: 
-    <strong><?= htmlspecialchars($_SESSION["role"]) ?></strong>
-</p>
+<main>
+    <div class="cards">
+        <div class="card">
+            <h2>Λίστα Αιτήσεων</h2>
+            <p>Προβολή και αναζήτηση αιτήσεων.</p>
+            <a href="list.php" class="btn">Άνοιγμα</a>
+        </div>
+    </div>
+</main>
 
-<hr>
-
-<h3>Menu</h3>
-
-<ul>
-    <li><a href="list.php">📋 View Applications</a></li>
-    <li><a href="../auth/logout.php">🚪 Logout</a></li>
-</ul>
+<footer>
+    <p>Σύστημα Διαχείρισης Ειδικών Επιστημόνων &mdash; ΤΕΠΑΚ</p>
+</footer>
 
 </body>
 </html>

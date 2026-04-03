@@ -16,52 +16,49 @@ if (!in_array($_SESSION['role'], ['candidate', 'evaluator', 'hr'])) {
 <head>
     <meta charset="UTF-8">
     <title>Recruitment Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
 <header>
     <h1>Recruitment Module</h1>
-    <nav>
-        <ul>
-            <li><a href="dashboard.php">Dashboard</a></li>
-            <li><a href="../auth/logout.php">Αποσύνδεση</a></li>
-        </ul>
-    </nav>
+    <div class="user-info"><?= htmlspecialchars($_SESSION['username']) ?> &mdash; <?= htmlspecialchars($_SESSION['role']) ?></div>
 </header>
 
-<p>Καλώς ήρθατε, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong> (<?= htmlspecialchars($_SESSION['role']) ?>)</p>
+<nav>
+    <a href="dashboard.php">Dashboard</a>
+    <a href="../auth/logout.php">Αποσύνδεση</a>
+</nav>
 
 <main>
-    <section class="dashboard">
-        <h2>Dashboard</h2>
+    <div class="cards">
 
-        <div class="cards">
-
-            <div class="card">
-                <h3>My Profile</h3>
-                <p>Προβολή και επεξεργασία στοιχείων</p>
-                <button>Άνοιγμα</button>
-            </div>
-
-            <div class="card">
-                <h3>My Applications</h3>
-                <p>Δημιουργία και επεξεργασία αιτήσεων</p>
-                <button>Άνοιγμα</button>
-            </div>
-
-            <div class="card">
-                <h3>Application Status</h3>
-                <p>Παρακολούθηση κατάστασης αιτήσεων</p>
-                <button>Άνοιγμα</button>
-            </div>
-
+        <div class="card">
+            <div class="card-icon">👤</div>
+            <h3>My Profile</h3>
+            <p>Προβολή και επεξεργασία των προσωπικών σας στοιχείων.</p>
+            <button>Άνοιγμα</button>
         </div>
-    </section>
+
+        <div class="card">
+            <div class="card-icon">📝</div>
+            <h3>My Applications</h3>
+            <p>Δημιουργία, επεξεργασία και υποβολή αιτήσεων πρόσληψης.</p>
+            <button>Άνοιγμα</button>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔍</div>
+            <h3>Κατάσταση Αιτήσεων</h3>
+            <p>Παρακολούθηση της τρέχουσας κατάστασης των αιτήσεών σας.</p>
+            <button>Άνοιγμα</button>
+        </div>
+
+    </div>
 </main>
 
 <footer>
-    <p>Recruitment Module</p>
+    <p>Σύστημα Διαχείρισης Ειδικών Επιστημόνων &mdash; ΤΕΠΑΚ</p>
 </footer>
 
 </body>

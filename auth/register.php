@@ -73,44 +73,50 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Εγγραφή</title>
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
-<h2>Εγγραφή</h2>
+<div class="auth-wrapper">
+    <div class="auth-box">
+        <h2>Εγγραφή</h2>
 
+        <?php if (!empty($errors)): ?>
+            <div class="alert-error">
+                <ul>
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= htmlspecialchars($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
-<?php if (!empty($errors)): ?>
-    <ul style="color:red;">
-        <?php foreach ($errors as $error): ?>
-            <li><?= htmlspecialchars($error) ?></li>
-        <?php endforeach; ?>
-    </ul>
-<?php endif; ?>
+        <form method="POST">
+            <label>Όνομα χρήστη:</label>
+            <input type="text" name="username" required>
 
-<form method="POST">
+            <label>Email:</label>
+            <input type="email" name="email" required>
 
-    <label>Όνομα χρήστη:</label><br>
-    <input type="text" name="username" required><br><br>
+            <label>Κωδικός:</label>
+            <input type="password" name="password" required>
 
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
+            <label>Επιβεβαίωση κωδικού:</label>
+            <input type="password" name="confirm" required>
 
-    <label>Κωδικός:</label><br>
-    <input type="password" name="password" required><br><br>
+            <button type="submit">Εγγραφή</button>
+        </form>
 
-    <label>Επιβεβαίωση κωδικού:</label><br>
-    <input type="password" name="confirm" required><br><br>
-
-    <button type="submit">Εγγραφή</button>
-
-</form>
-
-<p>Έχετε ήδη λογαριασμό; <a href="login.php">Σύνδεση</a></p>
+        <div class="auth-link">
+            Έχετε ήδη λογαριασμό; <a href="login.php">Σύνδεση</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

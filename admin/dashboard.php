@@ -16,13 +16,13 @@ if ($_SESSION['role'] !== 'admin') {
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
 <header>
-  <h1>Admin Dashboard</h1>
-  <p>Καλώς ήρθατε, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong></p>
+  <h1>Admin Module</h1>
+  <div class="user-info"><?= htmlspecialchars($_SESSION['username']) ?> &mdash; admin</div>
 </header>
 
 <nav>
@@ -34,26 +34,30 @@ if ($_SESSION['role'] !== 'admin') {
   <section class="cards">
 
     <div class="card">
+      <div class="card-icon">👥</div>
       <h2>Manage Users</h2>
-      <p>Διαχείριση χρηστών της εφαρμογής.</p>
+      <p>Προβολή και διαχείριση όλων των χρηστών της εφαρμογής.</p>
       <button>Άνοιγμα</button>
     </div>
 
     <div class="card">
+      <div class="card-icon">📋</div>
       <h2>Manage Recruitment</h2>
-      <p>Διαχείριση αιτήσεων και προκηρύξεων.</p>
+      <p>Διαχείριση αιτήσεων, προκηρύξεων και αξιολογητών.</p>
       <button>Άνοιγμα</button>
     </div>
 
     <div class="card">
+      <div class="card-icon">⚙️</div>
       <h2>Configure System</h2>
-      <p>Ρυθμίσεις συστήματος και παραμέτρων.</p>
+      <p>Ρυθμίσεις συστήματος, theme και σύνδεση Moodle.</p>
       <button>Άνοιγμα</button>
     </div>
 
     <div class="card">
+      <div class="card-icon">📊</div>
       <h2>Report</h2>
-      <p>Στατιστικά και αναφορές.</p>
+      <p>Στατιστικά και αναφορές αιτήσεων ανά μάθημα.</p>
       <button>Άνοιγμα</button>
     </div>
 
@@ -61,7 +65,7 @@ if ($_SESSION['role'] !== 'admin') {
 </main>
 
 <footer>
-  <p>Web Engineering Project – Admin Module</p>
+  <p>Σύστημα Διαχείρισης Ειδικών Επιστημόνων &mdash; ΤΕΠΑΚ</p>
 </footer>
 
 </body>

@@ -82,7 +82,7 @@ README.md
 2. Create a new database:
 
 ```
-web_project
+tepak_ee
 ```
 
 3. Import the following files:
@@ -105,8 +105,40 @@ htdocs/
 4. Open browser and go to:
 
 ```
-http://localhost/web-engineering-project/auth/register.php
+http://localhost/web-engineering-project/
 ```
+
+This is the landing page where you can choose a module and log in or register.
+
+---
+
+## 🔑 Demo Credentials
+
+| Email | Password | Role |
+|-------|----------|------|
+| admin@test.com | admin123 | admin |
+| user1@test.com | user1pass | candidate |
+| user2@test.com | user2pass | candidate |
+| hr1@test.com | hr1pass | hr |
+| eval1@test.com | eval1pass | evaluator |
+
+Each role is redirected to its corresponding module dashboard after login.
+
+---
+
+## 🗂️ Key Pages
+
+| Page | URL |
+|------|-----|
+| Landing page | `http://localhost/web-engineering-project/` |
+| Login | `http://localhost/web-engineering-project/auth/login.php` |
+| Register | `http://localhost/web-engineering-project/auth/register.php` |
+| Applications list (with search) | `http://localhost/web-engineering-project/modules/list.php` |
+| Admin dashboard | `http://localhost/web-engineering-project/admin/dashboard.php` |
+| Recruitment dashboard | `http://localhost/web-engineering-project/recruitment/dashboard.php` |
+| Enrollment dashboard | `http://localhost/web-engineering-project/enrollment/dashboard.php` |
+
+> **Note:** All protected pages require login. Navigating to them directly while logged out will redirect to the login page.
 
 ---
 

@@ -7,26 +7,52 @@ if (isset($_SESSION['user_id'])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEPAK - Σύστημα Διαχείρισης Ειδικών Επιστημόνων</title>
+    <title>ΤΕΠΑΚ - Σύστημα Διαχείρισης Ειδικών Επιστημόνων</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<h1>Σύστημα Διαχείρισης Ειδικών Επιστημόνων</h1>
-<h2>Τεχνολογικό Πανεπιστήμιο Κύπρου</h2>
+<div class="landing-hero">
+    <h1>Σύστημα Διαχείρισης Ειδικών Επιστημόνων</h1>
+    <p>Τεχνολογικό Πανεπιστήμιο Κύπρου</p>
+</div>
 
-<p>Παρακαλώ επιλέξτε το module που θέλετε να χρησιμοποιήσετε:</p>
+<div class="landing-modules">
+    <h2>Επιλέξτε Module</h2>
+    <div class="cards">
 
-<ul>
-    <li><a href="auth/login.php?module=admin">Admin Module</a> — Διαχείριση χρηστών, προσλήψεων, ρυθμίσεων</li>
-    <li><a href="auth/login.php?module=recruitment">Recruitment Module</a> — Υποβολή και παρακολούθηση αιτήσεων</li>
-    <li><a href="auth/login.php?module=enrollment">Enrollment Module</a> — Συγχρονισμός με LMS Moodle</li>
-</ul>
+        <div class="card">
+            <h2>Admin Module</h2>
+            <p>Διαχείριση χρηστών, προσλήψεων και ρυθμίσεων συστήματος.</p>
+            <a href="auth/login.php?module=admin" class="btn">Είσοδος</a>
+        </div>
 
-<p><a href="auth/register.php">Εγγραφή νέου χρήστη</a></p>
+        <div class="card">
+            <h2>Recruitment Module</h2>
+            <p>Υποβολή και παρακολούθηση αιτήσεων πρόσληψης.</p>
+            <a href="auth/login.php?module=recruitment" class="btn">Είσοδος</a>
+        </div>
+
+        <div class="card">
+            <h2>Enrollment Module</h2>
+            <p>Συγχρονισμός ειδικών επιστημόνων με το LMS Moodle.</p>
+            <a href="auth/login.php?module=enrollment" class="btn">Είσοδος</a>
+        </div>
+
+    </div>
+
+    <div class="landing-register">
+        Νέος χρήστης; <a href="auth/register.php">Εγγραφή εδώ</a>
+    </div>
+</div>
+
+<footer>
+    <p>Σύστημα Διαχείρισης Ειδικών Επιστημόνων &mdash; ΤΕΠΑΚ &copy; <?= date('Y') ?></p>
+</footer>
 
 </body>
 </html>
