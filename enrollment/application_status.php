@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 $host = "127.0.0.1";
 $dbname = "tepak_ee";
 $username = "root";
-$password = "";
+$password = "oTem333!";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

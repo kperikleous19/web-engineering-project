@@ -54,6 +54,15 @@ if (!in_array($_SESSION['role'], ['candidate', 'evaluator', 'hr'])) {
             <a href="../enrollment/application_status.php" class="btn">Άνοιγμα</a>
         </div>
 
+        <?php if ($_SESSION['role'] === 'evaluator'): ?>
+        <div class="card">
+            <div class="card-icon">⭐</div>
+            <h3>Αξιολόγηση Αιτήσεων</h3>
+            <p>Προβολή, αξιολόγηση και σχολιασμός αιτήσεων υποψηφίων.</p>
+            <a href="evaluate.php" class="btn">Άνοιγμα</a>
+        </div>
+        <?php endif; ?>
+
     </div>
 </main>
 

@@ -37,28 +37,28 @@ if ($_SESSION['role'] !== 'admin') {
       <div class="card-icon">👥</div>
       <h2>Manage Users</h2>
       <p>Προβολή και διαχείριση όλων των χρηστών της εφαρμογής.</p>
-      <button>Άνοιγμα</button>
+      <a href="../users.php" class="btn">Άνοιγμα</a>
     </div>
 
     <div class="card">
       <div class="card-icon">📋</div>
       <h2>Manage Recruitment</h2>
       <p>Διαχείριση αιτήσεων, προκηρύξεων και αξιολογητών.</p>
-      <button>Άνοιγμα</button>
+      <a href="../recruitment.php" class="btn">Άνοιγμα</a>
     </div>
 
     <div class="card">
       <div class="card-icon">⚙️</div>
       <h2>Configure System</h2>
       <p>Ρυθμίσεις συστήματος, theme και σύνδεση Moodle.</p>
-      <button>Άνοιγμα</button>
+      <a href="../system.php" class="btn">Άνοιγμα</a>
     </div>
 
     <div class="card">
       <div class="card-icon">📊</div>
       <h2>Report</h2>
       <p>Στατιστικά και αναφορές αιτήσεων ανά μάθημα.</p>
-      <button>Άνοιγμα</button>
+      <a href="../reports.php" class="btn">Άνοιγμα</a>
     </div>
 
   </section>

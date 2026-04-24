@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $host = "127.0.0.1";
-$dbname = "tepak_ee_db";
+$dbname = "tepak_ee";
 $username = "root";
 $password = "oTem333!";
 
@@ -31,11 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_application'])
     $department_name = trim($_POST['department_name']);
     $faculty_name = trim($_POST['faculty_name']);
     
+    if (!empty($_POST['custom_course'])) {
+        $course_name = trim($_POST['custom_course']);
+    }
+
     if (empty($course_name)) {
         $error = "Παρακαλώ συμπληρώστε το μάθημα/θέση";
     } else {
-        $stmt = $pdo->prepare("INSERT INTO applications (user_id, course_name, department_name, school_name, status, completion_percentage) VALUES (?, ?, ?, ?, 'draft', 0)");
-        if ($stmt->execute([$_SESSION['user_id'], $course_name, $department_name, $faculty_name])) {
+        $stmt = $pdo->prepare("INSERT INTO applications (user_id, course, department, course_name, department_name, school_name, status, completion_percentage) VALUES (?, ?, ?, ?, ?, ?, 'draft', 0)");
+        if ($stmt->execute([$_SESSION['user_id'], $course_name, $department_name, $course_name, $department_name, $faculty_name])) {
             $success = "Η αίτηση δημιουργήθηκε επιτυχώς!";
         } else {
             $error = "Σφάλμα κατά τη δημιουργία.";
