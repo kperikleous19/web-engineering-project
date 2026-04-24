@@ -37,21 +37,21 @@ if (!in_array($_SESSION['role'], ['candidate', 'evaluator', 'hr'])) {
             <div class="card-icon">👤</div>
             <h3>My Profile</h3>
             <p>Προβολή και επεξεργασία των προσωπικών σας στοιχείων.</p>
-            <button>Άνοιγμα</button>
+            <a href="../enrollment/my_profile.php" class="btn">Άνοιγμα</a>
         </div>
 
         <div class="card">
             <div class="card-icon">📝</div>
             <h3>My Applications</h3>
             <p>Δημιουργία, επεξεργασία και υποβολή αιτήσεων πρόσληψης.</p>
-            <button>Άνοιγμα</button>
+            <a href="../enrollment/my_applications.php" class="btn">Άνοιγμα</a>
         </div>
 
         <div class="card">
             <div class="card-icon">🔍</div>
             <h3>Κατάσταση Αιτήσεων</h3>
             <p>Παρακολούθηση της τρέχουσας κατάστασης των αιτήσεών σας.</p>
-            <button>Άνοιγμα</button>
+            <a href="../enrollment/application_status.php" class="btn">Άνοιγμα</a>
         </div>
 
     </div>
