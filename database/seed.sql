@@ -99,5 +99,11 @@ INSERT INTO system_config (config_key, config_value) VALUES
 ('auto_sync_enabled', '1'),
 ('system_name', 'Σύστημα Διαχείρισης Ειδικών Επιστημόνων'),
 ('institution_name', 'Τεχνολογικό Πανεπιστήμιο Κύπρου'),
+('brand_label', 'ΤΕΠΑΚ'),
+('theme_logo_url', ''),
+('primary_color', '#1b4f78'),
+('accent_color', '#7a4f2e'),
+('background_color', '#ece4da'),
+('footer_text', 'Σύστημα Διαχείρισης Ειδικών Επιστημόνων'),
 ('max_applications_per_period', '3'),
 ('moodle_url', 'https://moodle.tepak.ac.cy');

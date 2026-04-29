@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg" style="background: white; border-bottom: 1px solid #e9dfd7;">
+<nav class="navbar navbar-expand-lg" style="background: white; border-bottom: 1px solid #c9b5a5;">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="../index.php" style="color: #2c5f8a;">
+        <a class="navbar-brand fw-bold" href="../index.php" style="color: #1b4f78;">
             <i class="fas fa-graduation-cap"></i> ΤΕΠΑΚ
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -32,7 +32,7 @@
 
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <span class="nav-link" style="color: #8a7163;">
+                    <span class="nav-link" style="color: #6e4e3a;">
                         <i class="fas fa-user-circle"></i>
                         <?= htmlspecialchars(($_SESSION['first_name'] ?? '') . ' ' . ($_SESSION['last_name'] ?? $_SESSION['username'] ?? '')) ?>
                     </span>

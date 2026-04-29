@@ -84,6 +84,7 @@ CREATE TABLE moodle_integration (
     last_sync TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
+    UNIQUE KEY unique_user_course (user_id, course_id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (course_id) REFERENCES courses(id)
 );
@@ -106,10 +107,14 @@ CREATE TABLE applications (
     completion_percentage INT DEFAULT 0,
     status VARCHAR(50) DEFAULT 'pending',
     reviewer_comments TEXT NULL,
+    evaluator_id INT NULL,
+    evaluator_score DECIMAL(4,1) NULL,
+    evaluator_notes TEXT NULL,
     announcement_id INT NULL,
     updated_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (evaluator_id) REFERENCES users(id),
     FOREIGN KEY (announcement_id) REFERENCES announcements(id)
 );

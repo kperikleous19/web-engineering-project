@@ -11,18 +11,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     exit;
 }
 
-$host = "127.0.0.1";
-$dbname = "tepak_ee";
-$username = "root";
-$password = "oTem333!";
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    die("Database connection failed.");
-}
+require_once __DIR__ . "/includes/db.php";
 
 $id = (int) $_GET['id'];
 $stmt = $pdo->prepare("SELECT u.*, r.role_name FROM users u LEFT JOIN roles r ON u.role_id = r.id WHERE u.id = ?");
@@ -46,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $role_id    = (int) $_POST['role_id'];
     $role_name  = $_POST['role_name'];
 
+    $new_password = trim($_POST['new_password'] ?? '');
+
     $check = $pdo->prepare("SELECT id FROM users WHERE email = ? AND id != ?");
     $check->execute([$email, $id]);
     if ($check->fetch()) {
@@ -53,7 +44,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $stmt = $pdo->prepare("UPDATE users SET first_name = ?, last_name = ?, email = ?, phone = ?, role_id = ?, role = ? WHERE id = ?");
         $stmt->execute([$first_name, $last_name, $email, $phone, $role_id, $role_name, $id]);
-        $message = "Ο χρήστης ενημερώθηκε επιτυχώς.";
+
+        if ($new_password !== '') {
+            if (strlen($new_password) < 6) {
+                $error = "Ο νέος κωδικός πρέπει να έχει τουλάχιστον 6 χαρακτήρες.";
+            } else {
+                $hash = password_hash($new_password, PASSWORD_DEFAULT);
+                $pdo->prepare("UPDATE users SET password_hash = ? WHERE id = ?")->execute([$hash, $id]);
+                $message = "Ο χρήστης και ο κωδικός ενημερώθηκαν επιτυχώς.";
+            }
+        } else {
+            $message = "Ο χρήστης ενημερώθηκε επιτυχώς.";
+        }
+
         $stmt = $pdo->prepare("SELECT u.*, r.role_name FROM users u LEFT JOIN roles r ON u.role_id = r.id WHERE u.id = ?");
         $stmt->execute([$id]);
         $user = $stmt->fetch();
@@ -71,26 +74,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f5f0eb; }
+        body { font-family: 'Inter', sans-serif; background: #ece4da; }
         .container { max-width: 700px; margin: 0 auto; padding: 24px; }
-        .header { background: white; border-radius: 20px; padding: 20px 30px; margin-bottom: 25px; border: 1px solid #e9dfd7; display: flex; justify-content: space-between; align-items: center; }
-        .logo h2 { color: #2c5f8a; font-size: 1.4rem; margin: 0; }
-        .logo span { color: #8b6b4d; }
-        .content-card { background: white; border-radius: 20px; border: 1px solid #e9dfd7; overflow: hidden; }
-        .card-header { padding: 20px 28px; border-bottom: 1px solid #e9dfd7; background: #faf9f7; }
+        .header { background: white; border-radius: 20px; padding: 20px 30px; margin-bottom: 25px; border: 1px solid #c9b5a5; display: flex; justify-content: space-between; align-items: center; }
+        .logo h2 { color: #1b4f78; font-size: 1.4rem; margin: 0; }
+        .logo span { color: #7a4f2e; }
+        .content-card { background: white; border-radius: 20px; border: 1px solid #c9b5a5; overflow: hidden; }
+        .card-header { padding: 20px 28px; border-bottom: 1px solid #c9b5a5; background: #efe6db; }
         .card-header h3 { margin: 0; font-size: 1.1rem; font-weight: 600; color: #2c2c2c; }
-        .card-header h3 i { color: #8b6b4d; margin-right: 8px; }
+        .card-header h3 i { color: #7a4f2e; margin-right: 8px; }
         .card-body { padding: 28px; }
-        .form-label { font-weight: 600; color: #5a4a40; }
+        .form-label { font-weight: 600; color: #3d2510; }
         .form-control, .form-select { border-radius: 30px; border: 1px solid #e2dcd5; padding: 10px 18px; font-family: 'Inter', sans-serif; }
-        .form-control:focus, .form-select:focus { border-color: #2c5f8a; box-shadow: 0 0 0 3px rgba(44,95,138,0.1); }
-        .btn-save { background: #2c5f8a; color: white; border: none; padding: 12px 30px; border-radius: 40px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .form-control:focus, .form-select:focus { border-color: #1b4f78; box-shadow: 0 0 0 3px rgba(44,95,138,0.1); }
+        .btn-save { background: #1b4f78; color: white; border: none; padding: 12px 30px; border-radius: 40px; font-weight: 500; cursor: pointer; transition: 0.2s; }
         .btn-save:hover { background: #245080; }
-        .btn-back { background: #e6d9d0; color: #5a4a40; border: none; padding: 12px 30px; border-radius: 40px; font-weight: 500; text-decoration: none; transition: 0.2s; }
-        .btn-back:hover { background: #dccfc4; color: #5a4a40; }
+        .btn-back { background: #e4d0bf; color: #3d2510; border: none; padding: 12px 30px; border-radius: 40px; font-weight: 500; text-decoration: none; transition: 0.2s; }
+        .btn-back:hover { background: #e0cfc0; color: #3d2510; }
         .alert-success { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; color: #2e7d32; }
         .alert-error { background: #ffebee; border-left: 4px solid #dc3545; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; color: #c62828; }
-        .footer { text-align: center; padding: 25px; color: #8a8a8a; font-size: 12px; }
+        .footer { text-align: center; padding: 25px; color: #6e4e3a; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -136,6 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php endforeach; ?>
                             </select>
                             <input type="hidden" name="role_name" value="<?= htmlspecialchars($user['role_name'] ?? $user['role']) ?>">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label"><i class="fas fa-key"></i> Επαναφορά Κωδικού <small class="text-muted">(αφήστε κενό για να μην αλλάξει)</small></label>
+                            <input type="password" name="new_password" class="form-control" placeholder="Νέος κωδικός (προαιρετικό)">
                         </div>
                         <div class="col-12 d-flex gap-3 mt-3">
                             <button type="submit" class="btn-save"><i class="fas fa-save"></i> Αποθήκευση</button>

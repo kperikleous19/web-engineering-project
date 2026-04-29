@@ -55,15 +55,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $defaultRole = 'candidate';
 
         $stmt = $pdo->prepare("
-            INSERT INTO users (username, email, password_hash, role)
-            VALUES (:username, :email, :password, :role)
+            INSERT INTO users (username, email, password_hash, role, role_id)
+            SELECT :username, :email, :password, :role, id
+            FROM roles
+            WHERE role_name = :role_lookup
         ");
 
         $stmt->execute([
             'username' => $username,
             'email' => $email,
             'password' => $hash,
-            'role' => $defaultRole
+            'role' => $defaultRole,
+            'role_lookup' => $defaultRole
         ]);
 
         header("Location: login.php?registered=1");

@@ -1,5 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ── COLOUR TOKENS ─────────────────────────────────────────
+   Background  : #ece4da  (richer warm beige)
+   Card bg     : #faf6f1  (warm off-white)
+   Card header : #efe6db  (distinct warm tint)
+   Border      : #c9b5a5  (visible, not harsh)
+   Text-primary: #1c1008  (near-black warm — strong contrast)
+   Text-body   : #3d2510  (dark warm brown)
+   Text-muted  : #6e4e3a  (readable mid-brown)
+   Blue accent : #1b4f78  (deep academic blue)
+   Brown accent: #7a4f2e  (rich warm brown)
+   Danger      : #991515
+   Success     : #1a5c30
+──────────────────────────────────────────────────────────── */
+
 * {
     margin: 0;
     padding: 0;
@@ -8,8 +22,8 @@
 
 body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #e8edf5 0%, #f4f6fb 100%);
-    color: #1e293b;
+    background: #ece4da;
+    color: #1c1008;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -17,7 +31,7 @@ body {
 
 /* ── HEADER ── */
 header {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #38bdf8 100%);
+    background: #1c1008;
     color: white;
     padding: 20px 48px;
     display: flex;
@@ -25,39 +39,39 @@ header {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.25);
 }
 
 header h1 {
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 0.3px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    color: #fff;
 }
 
 header .user-info {
     font-size: 13px;
-    color: rgba(255,255,255,0.75);
-    background: rgba(255,255,255,0.12);
-    padding: 5px 14px;
+    color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.1);
+    padding: 5px 16px;
     border-radius: 50px;
-    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.15);
     text-transform: capitalize;
 }
 
 /* ── NAV ── */
 nav {
-    background: rgba(30, 58, 95, 0.97);
+    background: #2d1a0e;
     padding: 10px 48px;
     display: flex;
     gap: 24px;
     flex-wrap: wrap;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 nav a {
     text-decoration: none;
-    color: #93c5fd;
+    color: #d4b89a;
     font-weight: 600;
     font-size: 13px;
     transition: color 0.2s;
@@ -82,8 +96,8 @@ button,
 input[type="submit"] {
     display: inline-block;
     padding: 10px 28px;
-    background: linear-gradient(135deg, #2563eb, #38bdf8);
-    color: white;
+    background: #1b4f78;
+    color: #fff;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 14px;
@@ -92,22 +106,23 @@ input[type="submit"] {
     cursor: pointer;
     text-decoration: none;
     text-align: center;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-    transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+    box-shadow: 0 3px 10px rgba(27, 79, 120, 0.3);
+    transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
 }
 
 .btn:hover,
 button:hover,
 input[type="submit"]:hover {
-    background: linear-gradient(135deg, #1d4ed8, #0ea5e9);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+    background: #153d5e;
+    box-shadow: 0 5px 16px rgba(27, 79, 120, 0.4);
     transform: translateY(-2px);
+    color: #fff;
 }
 
 .btn:active,
 button:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    box-shadow: 0 2px 6px rgba(27, 79, 120, 0.25);
 }
 
 /* ── CARDS ── */
@@ -122,12 +137,11 @@ button:active {
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(8px);
+    background: #faf6f1;
     padding: 40px 32px;
-    border-radius: 20px;
-    box-shadow: 0 4px 24px rgba(37, 99, 235, 0.09), 0 1px 4px rgba(0,0,0,0.06);
-    border: 1px solid rgba(255,255,255,0.95);
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(28, 16, 8, 0.08), 0 1px 4px rgba(0,0,0,0.05);
+    border: 1px solid #c9b5a5;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -139,8 +153,8 @@ button:active {
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(37, 99, 235, 0.16);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 32px rgba(28, 16, 8, 0.13);
 }
 
 .card .card-icon {
@@ -152,14 +166,14 @@ button:active {
 .card h2, .card h3 {
     font-size: 18px;
     font-weight: 700;
-    color: #1e3a5f;
+    color: #1b4f78;
 }
 
 .card p {
     font-size: 14px;
-    color: #64748b;
+    color: #6e4e3a;
     flex-grow: 1;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .card .btn {
@@ -184,12 +198,11 @@ button:active {
 }
 
 .auth-box {
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(12px);
+    background: #faf6f1;
     padding: 44px 48px;
-    border-radius: 20px;
-    box-shadow: 0 8px 40px rgba(37, 99, 235, 0.12), 0 2px 8px rgba(0,0,0,0.06);
-    border: 1px solid rgba(255,255,255,0.95);
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(28, 16, 8, 0.1), 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #c9b5a5;
     width: 100%;
     max-width: 420px;
 }
@@ -197,7 +210,7 @@ button:active {
 .auth-box h2 {
     margin-bottom: 28px;
     font-size: 26px;
-    color: #1e3a5f;
+    color: #1c1008;
     text-align: center;
     font-weight: 700;
 }
@@ -207,7 +220,7 @@ button:active {
     margin-bottom: 6px;
     font-size: 13px;
     font-weight: 600;
-    color: #475569;
+    color: #3d2510;
 }
 
 .auth-box input[type="text"],
@@ -215,20 +228,21 @@ button:active {
 .auth-box input[type="password"] {
     width: 100%;
     padding: 11px 18px;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #c9b5a5;
     border-radius: 50px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
     margin-bottom: 16px;
-    background: #f8fafc;
+    background: #fff;
+    color: #1c1008;
     transition: border 0.2s, box-shadow 0.2s;
 }
 
 .auth-box input:focus {
-    border-color: #2563eb;
+    border-color: #1b4f78;
     outline: none;
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(27, 79, 120, 0.12);
 }
 
 .auth-box button[type="submit"] {
@@ -242,11 +256,11 @@ button:active {
     text-align: center;
     margin-top: 20px;
     font-size: 13px;
-    color: #94a3b8;
+    color: #6e4e3a;
 }
 
 .auth-box .auth-link a {
-    color: #2563eb;
+    color: #1b4f78;
     font-weight: 700;
     text-decoration: none;
 }
@@ -257,13 +271,13 @@ button:active {
 
 /* ── ALERTS ── */
 .alert-error {
-    background: #fff0f0;
-    border-left: 4px solid #ef4444;
+    background: #fdf0f0;
+    border-left: 4px solid #991515;
     padding: 12px 16px;
     border-radius: 10px;
     margin-bottom: 20px;
     font-size: 13px;
-    color: #dc2626;
+    color: #991515;
 }
 
 .alert-error ul {
@@ -272,24 +286,23 @@ button:active {
 }
 
 .alert-success {
-    background: #f0fdf4;
-    border-left: 4px solid #22c55e;
+    background: #edf7f1;
+    border-left: 4px solid #1a5c30;
     padding: 12px 16px;
     border-radius: 10px;
     margin-bottom: 20px;
     font-size: 13px;
-    color: #16a34a;
+    color: #1a5c30;
 }
 
 /* ── TABLE ── */
 .table-wrapper {
-    background: rgba(255,255,255,0.88);
-    backdrop-filter: blur(8px);
-    border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(37, 99, 235, 0.08);
+    background: #faf6f1;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(28, 16, 8, 0.07);
     overflow: hidden;
     margin-top: 24px;
-    border: 1px solid rgba(255,255,255,0.9);
+    border: 1px solid #c9b5a5;
 }
 
 table {
@@ -298,8 +311,8 @@ table {
 }
 
 table th {
-    background: linear-gradient(135deg, #1e3a5f, #2563eb);
-    color: white;
+    background: #1c1008;
+    color: #e8d8c8;
     padding: 14px 20px;
     text-align: left;
     font-size: 12px;
@@ -310,9 +323,9 @@ table th {
 
 table td {
     padding: 13px 20px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #e8ddd4;
     font-size: 14px;
-    color: #334155;
+    color: #3d2510;
 }
 
 table tr:last-child td {
@@ -320,7 +333,7 @@ table tr:last-child td {
 }
 
 table tr:hover td {
-    background-color: #f8faff;
+    background-color: #f5ede3;
 }
 
 .badge {
@@ -331,9 +344,9 @@ table tr:hover td {
     display: inline-block;
 }
 
-.badge-approved { background: #dcfce7; color: #16a34a; }
-.badge-pending  { background: #fef9c3; color: #ca8a04; }
-.badge-review   { background: #dbeafe; color: #2563eb; }
+.badge-approved { background: #daf0e4; color: #1a5c30; }
+.badge-pending  { background: #fdf3dc; color: #7a4a00; }
+.badge-review   { background: #dceaf7; color: #1b4f78; }
 
 /* ── SEARCH BAR ── */
 .search-bar {
@@ -345,30 +358,30 @@ table tr:hover td {
 .search-bar input {
     flex: 1;
     padding: 11px 22px;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #c9b5a5;
     border-radius: 50px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
     min-width: 200px;
-    background: rgba(255,255,255,0.9);
+    background: #faf6f1;
+    color: #1c1008;
     transition: border 0.2s, box-shadow 0.2s;
 }
 
 .search-bar input:focus {
-    border-color: #2563eb;
+    border-color: #1b4f78;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(27, 79, 120, 0.12);
 }
 
 /* ── LANDING PAGE ── */
 .landing-hero {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #38bdf8 100%);
+    background: #1c1008;
     color: white;
     text-align: center;
-    padding: 100px 40px 80px;
+    padding: 90px 40px 70px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 30px rgba(37, 99, 235, 0.3);
 }
 
 .landing-hero::before {
@@ -376,7 +389,7 @@ table tr:hover td {
     position: absolute;
     top: -60px; right: -60px;
     width: 300px; height: 300px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.03);
     border-radius: 50%;
 }
 
@@ -385,7 +398,7 @@ table tr:hover td {
     position: absolute;
     bottom: -80px; left: -40px;
     width: 250px; height: 250px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.02);
     border-radius: 50%;
 }
 
@@ -393,14 +406,14 @@ table tr:hover td {
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 12px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
     position: relative;
     z-index: 1;
+    color: #fff;
 }
 
 .landing-hero p {
     font-size: 16px;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.6);
     position: relative;
     z-index: 1;
 }
@@ -416,7 +429,7 @@ table tr:hover td {
     text-align: center;
     font-size: 13px;
     margin-bottom: 6px;
-    color: #94a3b8;
+    color: #6e4e3a;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
@@ -426,11 +439,11 @@ table tr:hover td {
     text-align: center;
     margin-top: 36px;
     font-size: 14px;
-    color: #94a3b8;
+    color: #6e4e3a;
 }
 
 .landing-register a {
-    color: #2563eb;
+    color: #1b4f78;
     font-weight: 700;
     text-decoration: none;
 }
@@ -441,8 +454,8 @@ table tr:hover td {
 
 /* ── FOOTER ── */
 footer {
-    background: linear-gradient(135deg, #1e3a5f, #2563eb);
-    color: rgba(255,255,255,0.5);
+    background: #1c1008;
+    color: rgba(255,255,255,0.45);
     text-align: center;
     padding: 18px 40px;
     font-size: 13px;

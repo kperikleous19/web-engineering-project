@@ -2,27 +2,16 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+    header("Location: auth/login.php");
     exit;
 }
 
-if (!in_array($_SESSION['role'], ['admin', 'hr'])) {
-    header("Location: ../index.php");
+if (!in_array($_SESSION['role'], ['admin', 'hr', 'ee'])) {
+    header("Location: index.php");
     exit;
 }
 
-$host = "127.0.0.1";
-$dbname = "tepak_ee_db";
-$username = "root";
-$password = "";
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
+require_once __DIR__ . "/includes/db.php";
 
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
@@ -95,29 +84,35 @@ $syncHistory = $pdo->query("
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f5f0eb; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
-        .header { background: white; border-radius: 20px; padding: 20px 30px; margin-bottom: 25px; border: 1px solid #e9dfd7; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .logo h2 { color: #2c5f8a; font-size: 1.4rem; margin: 0; }
-        .logo span { color: #8b6b4d; }
-        .user-badge { background: #e8ded5; padding: 8px 18px; border-radius: 40px; color: #5a4a40; }
-        .logout-btn { background: #e6d9d0; padding: 8px 18px; border-radius: 40px; text-decoration: none; color: #5a4a40; margin-left: 12px; }
-        .nav-menu { background: white; border-radius: 50px; padding: 8px 20px; margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 8px; border: 1px solid #e9dfd7; }
-        .nav-menu a { text-decoration: none; color: #8a8a8a; font-weight: 500; padding: 10px 24px; border-radius: 40px; transition: 0.2s; }
-        .nav-menu a i { margin-right: 8px; }
-        .nav-menu a:hover, .nav-menu a.active { background: #e6d9d0; color: #5a4a40; }
-        .content-card { background: white; border-radius: 20px; border: 1px solid #e9dfd7; overflow: hidden; margin-bottom: 30px; }
-        .card-header { padding: 20px 28px; border-bottom: 1px solid #e9dfd7; background: #faf9f7; }
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #ece4da; }
+        .topbar { background: white; border-bottom: 1px solid #c9b5a5; height: 64px; position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; }
+        .topbar-logo { color: #1b4f78; font-weight: 700; font-size: 1.15rem; }
+        .topbar-logo span { color: #7a4f2e; font-weight: 400; }
+        .topbar-right { display: flex; align-items: center; gap: 10px; }
+        .user-badge { background: #e4d0bf; padding: 7px 16px; border-radius: 40px; color: #3d2510; font-size: 13px; }
+        .logout-btn { background: #e4d0bf; padding: 7px 16px; border-radius: 40px; text-decoration: none; color: #3d2510; font-size: 13px; transition: 0.15s; }
+        .logout-btn:hover { background: #d9c4b2; }
+        .sidebar { width: 250px; background: white; border-right: 1px solid #c9b5a5; height: calc(100vh - 64px); position: fixed; left: 0; top: 64px; overflow-y: auto; }
+        .sidebar-nav { padding: 12px 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: 11px; padding: 11px 22px; color: #5a5a5a; text-decoration: none; margin: 2px 10px; border-radius: 10px; font-size: 13.5px; font-weight: 500; transition: 0.15s; }
+        .sidebar-nav a i { width: 18px; font-size: 15px; flex-shrink: 0; }
+        .sidebar-nav a:hover { background: #f4f1ec; color: #1b4f78; }
+        .sidebar-nav a.active { background: #1b4f78; color: white; }
+        .nav-desc { font-size: 11px; font-weight: 400; opacity: 0.7; display: block; margin-top: 2px; line-height: 1.3; }
+        .nav-section-label { font-size: 10px; font-weight: 700; color: #a08070; text-transform: uppercase; letter-spacing: 1px; padding: 10px 22px 4px; margin-top: 6px; display: block; }
+        .main-content { margin-left: 250px; margin-top: 64px; padding: 28px 32px; min-height: calc(100vh - 64px); }
+        .content-card { background: white; border-radius: 20px; border: 1px solid #c9b5a5; overflow: hidden; margin-bottom: 30px; }
+        .card-header { padding: 20px 28px; border-bottom: 1px solid #c9b5a5; background: #efe6db; }
         .card-header h3 { margin: 0; font-size: 1.1rem; font-weight: 600; color: #2c2c2c; }
-        .card-header h3 i { color: #8b6b4d; margin-right: 8px; }
+        .card-header h3 i { color: #7a4f2e; margin-right: 8px; }
         .card-body { padding: 28px; }
         .stats-row { display: flex; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
-        .stat-box { background: white; border-radius: 16px; padding: 20px; flex: 1; text-align: center; border: 1px solid #e9dfd7; }
-        .stat-number { font-size: 32px; font-weight: 700; color: #2c5f8a; }
-        .stat-label { font-size: 12px; color: #8a7163; margin-top: 5px; }
-        .btn-primary { background: #e6d9d0; border: none; padding: 12px 24px; border-radius: 40px; font-weight: 500; cursor: pointer; margin: 5px; }
-        .btn-primary:hover { background: #dccfc4; }
+        .stat-box { background: white; border-radius: 16px; padding: 20px; flex: 1; text-align: center; border: 1px solid #c9b5a5; }
+        .stat-number { font-size: 32px; font-weight: 700; color: #1b4f78; }
+        .stat-label { font-size: 12px; color: #6e4e3a; margin-top: 5px; }
+        .btn-primary { background: #1b4f78; border: none; padding: 12px 24px; border-radius: 40px; font-weight: 500; cursor: pointer; margin: 5px; }
+        .btn-primary:hover { background: #153d5e; }
         .btn-danger { background: #ffebee; color: #dc3545; border: none; padding: 12px 24px; border-radius: 40px; font-weight: 500; cursor: pointer; }
         .btn-danger:hover { background: #fcd5d5; }
         .btn-success { background: #e8f5e9; color: #4caf50; border: none; padding: 12px 24px; border-radius: 40px; font-weight: 500; cursor: pointer; }
@@ -129,26 +124,49 @@ $syncHistory = $pdo->query("
         input:checked + .slider { background-color: #4caf50; }
         input:checked + .slider:before { transform: translateX(26px); }
         .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th { text-align: left; padding: 12px 15px; background: #f9f8f6; font-weight: 600; font-size: 12px; border-bottom: 1px solid #e9dfd7; }
+        .data-table th { text-align: left; padding: 12px 15px; background: #f9f8f6; font-weight: 600; font-size: 12px; border-bottom: 1px solid #c9b5a5; }
         .data-table td { padding: 12px 15px; border-bottom: 1px solid #f0ece7; font-size: 13px; }
         .alert-success { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px 20px; border-radius: 12px; margin-bottom: 20px; color: #2e7d32; }
-        .footer { text-align: center; padding: 25px; border-top: 1px solid #e9dfd7; color: #8a8a8a; font-size: 12px; margin-top: 30px; }
+        .footer { text-align: center; padding: 25px; border-top: 1px solid #c9b5a5; color: #6e4e3a; font-size: 12px; margin-top: 30px; }
         @media (max-width: 768px) { .container { padding: 16px; } .stats-row { flex-direction: column; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo"><h2><i class="fas fa-chalkboard-teacher"></i> ΤΕΠΑΚ <span>| Enrollment Module</span></h2></div>
-            <div><span class="user-badge"><i class="fas fa-user-circle"></i> <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></span> <a href="../auth/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Αποσύνδεση</a></div>
-        </div>
-        
-        <div class="nav-menu">
-            <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="lms_sync.php"><i class="fas fa-sync"></i> LMS Sync</a>
-            <a href="full_sync.php" class="active"><i class="fas fa-exchange-alt"></i> Full Sync</a>
-            <a href="reports.php"><i class="fas fa-chart-bar"></i> Reports</a>
-        </div>
+<div class="topbar">
+    <div class="topbar-logo"><i class="fas fa-graduation-cap"></i> ΤΕΠΑΚ <span>| <?= $_SESSION['role'] === 'admin' ? 'Admin Module' : 'Enrollment Module' ?></span></div>
+    <div class="topbar-right">
+        <span class="user-badge"><i class="fas fa-user-circle"></i> <?= htmlspecialchars($_SESSION['username']) ?></span>
+        <a href="auth/logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Αποσύνδεση</a>
+    </div>
+</div>
+<?php if ($_SESSION['role'] === 'admin'): ?>
+<div class="sidebar">
+    <div class="sidebar-nav">
+        <a href="admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="users.php"><i class="fas fa-users"></i> Διαχείριση Χρηστών</a>
+        <a href="recruitment.php"><i class="fas fa-bullhorn"></i> Διαχείριση Προκηρύξεων</a>
+        <a href="system.php"><i class="fas fa-cog"></i> Ρυθμίσεις Συστήματος</a>
+        <a href="reports.php"><i class="fas fa-chart-bar"></i> Αναφορές</a>
+        <span class="nav-section-label">Enrollment</span>
+        <a href="dashboard.php"><i class="fas fa-chalkboard-teacher"></i> Enrollment Dashboard</a>
+        <a href="lms_sync.php"><i class="fas fa-sync-alt"></i> LMS Sync</a>
+        <a href="full_sync.php" class="active"><i class="fas fa-database"></i> Full Sync</a>
+    </div>
+</div>
+<?php else: ?>
+<div class="sidebar">
+    <div class="sidebar-nav">
+        <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <?php if ($_SESSION['role'] === 'ee'): ?>
+        <a href="enrollment/my_profile.php"><i class="fas fa-user"></i> Το Προφίλ μου</a>
+        <?php endif; ?>
+        <a href="lms_sync.php"><i class="fas fa-sync-alt"></i> LMS Sync</a>
+        <a href="full_sync.php" class="active"><i class="fas fa-exchange-alt"></i> Full Sync</a>
+        <a href="reports.php"><i class="fas fa-chart-bar"></i> Αναφορές</a>
+    </div>
+</div>
+<?php endif; ?>
+<div class="main-content">
         
         <?php if ($success): ?>
             <div class="alert-success"><i class="fas fa-check-circle"></i> <?= $success ?></div>
@@ -243,5 +261,5 @@ $syncHistory = $pdo->query("
         
         <div class="footer"><p>© <?= date('Y') ?> Τεχνολογικό Πανεπιστήμιο Κύπρου — Σύστημα Διαχείρισης Ειδικών Επιστημόνων</p></div>
     </div>
+</div>
 </body>
-</html>

@@ -3,23 +3,12 @@ session_start();
 
 // Authentication check
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../auth/login.php");
+    header("Location: auth/login.php");
     exit;
 }
 
 // Database connection
-$host = "127.0.0.1";
-$dbname = "tepak_ee_db";
-$username = "root";
-$password = "";
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
+require_once __DIR__ . "/includes/db.php";
 
 // Get all roles for dropdown
 $roles = $pdo->query("SELECT * FROM roles ORDER BY role_name")->fetchAll();
@@ -34,34 +23,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $last_name = trim($_POST['last_name']);
     $phone = trim($_POST['phone'] ?? '');
     $role_id = $_POST['role_id'];
+    $roleStmt = $pdo->prepare("SELECT role_name FROM roles WHERE id = ?");
+    $roleStmt->execute([$role_id]);
+    $role_name = $roleStmt->fetchColumn() ?: 'candidate';
     $temp_password = bin2hex(random_bytes(4)); // Generate temp password like "a3f8d2e1"
     $password_hash = password_hash($temp_password, PASSWORD_DEFAULT);
-    
+
     // Check if email exists
     $check = $pdo->prepare("SELECT id FROM users WHERE email = ?");
     $check->execute([$email]);
     if ($check->fetch()) {
         $error = "Το email χρησιμοποιείται ήδη.";
     }
-    
+
     // Check if username exists
     $check = $pdo->prepare("SELECT id FROM users WHERE username = ?");
     $check->execute([$username]);
     if ($check->fetch()) {
         $error = "Το username χρησιμοποιείται ήδη.";
     }
-    
+
     if (empty($error)) {
         $stmt = $pdo->prepare("
-            INSERT INTO users (username, email, password_hash, first_name, last_name, phone, role_id) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO users (username, email, password_hash, first_name, last_name, phone, role_id, role)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        
-        if ($stmt->execute([$username, $email, $password_hash, $first_name, $last_name, $phone, $role_id])) {
+
+        if ($stmt->execute([$username, $email, $password_hash, $first_name, $last_name, $phone, $role_id, $role_name])) {
             $success = "Ο χρήστης δημιουργήθηκε επιτυχώς!<br>
                         <strong>Προσωρινός κωδικός:</strong> " . $temp_password . "<br>
                         <small>Παρακαλώ ενημερώστε τον χρήστη να αλλάξει τον κωδικό του κατά την πρώτη σύνδεση.</small>";
-            
+
             // Clear form
             $_POST = [];
         } else {
@@ -90,23 +82,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         /* Top Navigation Bar */
         .top-bar {
             background: white;
-            padding: 0 30px;
-            height: 70px;
+            padding: 0 28px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #e2dcd5;
-            position: sticky;
+            border-bottom: 1px solid #c9b5a5;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
         }
         .logo-area h2 {
             font-size: 1.3rem;
             font-weight: 600;
-            color: #2c5f8a;
+            color: #1b4f78;
             margin: 0;
         }
-        .logo-area span { font-weight: 400; color: #8b6b4d; }
+        .logo-area span { font-weight: 400; color: #7a4f2e; }
         .user-menu { display: flex; align-items: center; gap: 20px; }
         .user-info {
             display: flex;
@@ -116,49 +110,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: #f4f1ec;
             border-radius: 40px;
         }
-        .user-info i { font-size: 18px; color: #8b6b4d; }
+        .user-info i { font-size: 18px; color: #7a4f2e; }
         .user-info span { font-weight: 500; color: #2c2c2c; }
         .logout-btn {
-            color: #8b6b4d;
+            color: #7a4f2e;
             text-decoration: none;
             padding: 8px 16px;
             border-radius: 8px;
             transition: all 0.2s;
         }
-        .logout-btn:hover { background: #f4f1ec; color: #2c5f8a; }
+        .logout-btn:hover { background: #f4f1ec; color: #1b4f78; }
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
+            width: 250px;
             background: white;
-            border-right: 1px solid #e2dcd5;
-            height: calc(100vh - 70px);
+            border-right: 1px solid #c9b5a5;
+            height: calc(100vh - 64px);
             position: fixed;
             left: 0;
-            top: 70px;
+            top: 64px;
             overflow-y: auto;
         }
-        .sidebar-nav { padding: 20px 0; }
+        .sidebar-nav { padding: 12px 0; }
         .sidebar-nav a {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 24px;
+            gap: 11px;
+            padding: 11px 22px;
             color: #5a5a5a;
             text-decoration: none;
-            transition: all 0.2s;
-            margin: 4px 12px;
-            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: 0.15s;
+            margin: 2px 10px;
+            border-radius: 10px;
         }
-        .sidebar-nav a i { width: 22px; font-size: 18px; }
-        .sidebar-nav a:hover { background: #f4f1ec; color: #2c5f8a; }
-        .sidebar-nav a.active { background: #2c5f8a; color: white; }
+        .sidebar-nav a i { width: 18px; font-size: 15px; flex-shrink: 0; }
+        .sidebar-nav a:hover { background: #f4f1ec; color: #1b4f78; }
+        .sidebar-nav a.active { background: #1b4f78; color: white; }
+        .nav-desc { font-size: 11px; font-weight: 400; opacity: 0.7; display: block; margin-top: 2px; line-height: 1.3; }
+        .nav-section-label { font-size: 10px; font-weight: 700; color: #a08070; text-transform: uppercase; letter-spacing: 1px; padding: 10px 22px 4px; margin-top: 6px; display: block; }
 
         /* Main Content */
         .main-content {
-            margin-left: 260px;
-            padding: 30px;
-            min-height: calc(100vh - 70px);
+            margin-left: 250px;
+            margin-top: 64px;
+            padding: 28px 32px;
+            min-height: calc(100vh - 64px);
         }
 
         /* Content Card */
@@ -173,17 +172,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .card-header {
             padding: 25px 30px;
             border-bottom: 1px solid #e2dcd5;
-            background: #faf9f7;
+            background: #efe6db;
         }
         .card-header h3 {
             margin: 0;
             font-size: 1.3rem;
             font-weight: 600;
-            color: #2c5f8a;
+            color: #1b4f78;
         }
         .card-header p {
             margin: 8px 0 0;
-            color: #8a8a8a;
+            color: #6e4e3a;
             font-size: 14px;
         }
         .card-body { padding: 30px; }
@@ -199,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .form-group label i {
             margin-right: 8px;
-            color: #8b6b4d;
+            color: #7a4f2e;
             width: 20px;
         }
         .form-group input, .form-group select {
@@ -214,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: #2c5f8a;
+            border-color: #1b4f78;
             box-shadow: 0 0 0 3px rgba(44, 95, 138, 0.1);
         }
         .form-row {
@@ -225,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         /* Buttons */
         .btn-submit {
-            background: #2c5f8a;
+            background: #1b4f78;
             color: white;
             border: none;
             padding: 12px 25px;
@@ -309,7 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <i class="fas fa-user-circle"></i>
                 <span><?= htmlspecialchars($_SESSION['username'] ?? 'Administrator') ?></span>
             </div>
-            <a href="../auth/logout.php" class="logout-btn">
+            <a href="auth/logout.php" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Αποσύνδεση
             </a>
         </div>
@@ -318,8 +317,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-nav">
-            <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="users.php"><i class="fas fa-users"></i> Διαχείριση Χρηστών</a>
+            <a href="admin/dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="users.php" class="active"><i class="fas fa-users"></i> Διαχείριση Χρηστών</a>
             <a href="recruitment.php"><i class="fas fa-bullhorn"></i> Διαχείριση Προκηρύξεων</a>
             <a href="system.php"><i class="fas fa-cog"></i> Ρυθμίσεις Συστήματος</a>
             <a href="reports.php"><i class="fas fa-chart-bar"></i> Αναφορές</a>
@@ -329,11 +328,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Main Content -->
     <div class="main-content">
         <div style="margin-bottom: 25px;">
-            <a href="users.php" style="color: #8b6b4d; text-decoration: none; margin-bottom: 15px; display: inline-block;">
+            <a href="users.php" style="color: #7a4f2e; text-decoration: none; margin-bottom: 15px; display: inline-block;">
                 <i class="fas fa-arrow-left"></i> Επιστροφή στη Λίστα Χρηστών
             </a>
             <h1 style="font-size: 1.8rem; font-weight: 600; color: #2c2c2c;">Προσθήκη Νέου Χρήστη</h1>
-            <p style="color: #8a8a8a; margin-top: 5px;">Δημιουργήστε έναν νέο λογαριασμό χρήστη στο σύστημα</p>
+            <p style="color: #6e4e3a; margin-top: 5px;">Δημιουργήστε έναν νέο λογαριασμό χρήστη στο σύστημα</p>
         </div>
 
         <div class="content-card">
@@ -342,13 +341,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p>Συμπληρώστε τα παρακάτω πεδία για να δημιουργήσετε έναν νέο χρήστη</p>
             </div>
             <div class="card-body">
-                
+
                 <?php if ($success): ?>
                     <div class="alert-success">
                         <i class="fas fa-check-circle"></i> <?= $success ?>
                     </div>
                 <?php endif; ?>
-                
+
                 <?php if ($error): ?>
                     <div class="alert-error">
                         <i class="fas fa-exclamation-circle"></i> <?= $error ?>

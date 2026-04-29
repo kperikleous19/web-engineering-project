@@ -5,12 +5,12 @@ require_once '../includes/functions.php';
 
 $user_id = $_SESSION['user_id'];
 $stmt = $pdo->prepare("
-    SELECT a.*, ann.title_el, ann.application_start, ann.application_end, 
-           c.code, c.name_el AS course_name
+    SELECT a.*, ann.title_el, ann.application_start, ann.application_end,
+           c.course_code, COALESCE(a.course_name, c.course_name, a.course) AS display_course
     FROM applications a
-    JOIN announcements ann ON a.announcement_id = ann.id
+    LEFT JOIN announcements ann ON a.announcement_id = ann.id
     LEFT JOIN courses c ON ann.course_id = c.id
-    WHERE a.candidate_id = ?
+    WHERE a.user_id = ?
     ORDER BY a.created_at DESC
 ");
 $stmt->execute([$user_id]);
@@ -28,9 +28,9 @@ $applications = $stmt->fetchAll();
         <h2>Οι Αιτήσεις μου</h2>
         <?php if (count($applications) == 0): ?>
             <div class="alert alert-info">Δεν έχετε υποβάλει καμία αίτηση.</div>
-            <a href="apply.php" class="btn btn-primary">Υποβολή νέας αίτησης</a>
+            <a href="my_applications.php" class="btn btn-primary">Υποβολή νέας αίτησης</a>
         <?php else: ?>
-            <a href="apply.php" class="btn btn-primary mb-3">Νέα αίτηση</a>
+            <a href="my_applications.php" class="btn btn-primary mb-3">Νέα αίτηση</a>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -45,15 +45,15 @@ $applications = $stmt->fetchAll();
                 <tbody>
                 <?php foreach ($applications as $app): ?>
                     <tr>
-                        <td><?= sanitize($app['title_el']) ?></td>
-                        <td><?= sanitize($app['code'] . ' - ' . $app['course_name']) ?></td>
+                        <td><?= sanitize($app['title_el'] ?? 'Χωρίς προκήρυξη') ?></td>
+                        <td><?= sanitize(trim(($app['course_code'] ?? '') . ' - ' . $app['display_course'], ' -')) ?></td>
                         <td>
                             <?php
                             $statusClass = [
                                 'draft' => 'secondary',
-                                'submitted' => 'info',
+                                'pending' => 'info',
                                 'under_review' => 'warning',
-                                'accepted' => 'success',
+                                'approved' => 'success',
                                 'rejected' => 'danger',
                                 'withdrawn' => 'dark'
                             ];
@@ -70,12 +70,12 @@ $applications = $stmt->fetchAll();
                                 </div>
                             </div>
                         </td>
-                        <td><?= $app['submission_date'] ?: '-' ?></td>
+                        <td><?= $app['created_at'] ? date('d/m/Y', strtotime($app['created_at'])) : '-' ?></td>
                         <td>
                             <?php if ($app['status'] == 'draft'): ?>
-                                <a href="apply.php?id=<?= $app['id'] ?>" class="btn btn-sm btn-primary">Συνέχεια</a>
+                                <a href="my_applications.php" class="btn btn-sm btn-primary">Συνέχεια</a>
                             <?php else: ?>
-                                <a href="view_application.php?id=<?= $app['id'] ?>" class="btn btn-sm btn-info">Προβολή</a>
+                                <a href="application_status.php" class="btn btn-sm btn-info">Προβολή</a>
                             <?php endif; ?>
                         </td>
                     </tr>

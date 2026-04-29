@@ -9,10 +9,10 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
         header("Location: admin/dashboard.php");
         exit;
     } elseif ($role == 'hr') {
-        header("Location: enrollment/dashboard.php");
+        header("Location: enrollment/hr_dashboard.php");
         exit;
     } elseif ($role == 'candidate' || $role == 'evaluator') {
-        header("Location: recruitment/dashboard.php");
+        header("Location: enrollment/dashboard.php");
         exit;
     }
 }
@@ -40,22 +40,22 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
         }
         
         .landing-hero {
-            background: #e8ded5;
-            color: #5a4a40;
+            background: #e4d0bf;
+            color: #3d2510;
             text-align: center;
             padding: 80px 20px;
-            border-bottom: 1px solid #d6c9bf;
+            border-bottom: 1px solid #c9b5a5;
         }
         
         .landing-hero h1 {
             font-size: 2.5rem;
             margin-bottom: 15px;
-            color: #4a3a32;
+            color: #2d1a0e;
         }
         
         .landing-hero p {
             font-size: 1.2rem;
-            color: #8a7163;
+            color: #6e4e3a;
         }
         
         .landing-modules {
@@ -66,7 +66,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
         
         .landing-modules h2 {
             text-align: center;
-            color: #5a4a40;
+            color: #3d2510;
             margin-bottom: 30px;
             font-size: 1.8rem;
         }
@@ -88,13 +88,13 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(90, 70, 60, 0.08);
-            border: 1px solid #e9dfd7;
+            border: 1px solid #c9b5a5;
         }
         
         .card-admin:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(90, 70, 60, 0.15);
-            border-color: #dacbc1;
+            border-color: #c9b5a5;
         }
         
         /* Recruitment Card */
@@ -107,13 +107,13 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(90, 70, 60, 0.08);
-            border: 1px solid #e9dfd7;
+            border: 1px solid #c9b5a5;
         }
         
         .card-recruitment:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(90, 70, 60, 0.15);
-            border-color: #dacbc1;
+            border-color: #c9b5a5;
         }
         
         /* Enrollment Card */
@@ -126,13 +126,13 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             box-shadow: 0 5px 20px rgba(90, 70, 60, 0.08);
-            border: 1px solid #e9dfd7;
+            border: 1px solid #c9b5a5;
         }
         
         .card-enrollment:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 40px rgba(90, 70, 60, 0.15);
-            border-color: #dacbc1;
+            border-color: #c9b5a5;
         }
         
         .card-icon {
@@ -143,11 +143,11 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
         .card-admin h2, .card-recruitment h2, .card-enrollment h2 {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            color: #5a4a40;
+            color: #3d2510;
         }
         
         .card-admin p, .card-recruitment p, .card-enrollment p {
-            color: #8a7163;
+            color: #6e4e3a;
             font-size: 0.9rem;
             margin-bottom: 15px;
             line-height: 1.5;
@@ -162,16 +162,16 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             margin-bottom: 15px;
         }
         
-        .badge-admin { background: #2c5f8a; color: white; }
-        .badge-recruitment { background: #8b6b4d; color: white; }
+        .badge-admin { background: #1b4f78; color: white; }
+        .badge-recruitment { background: #7a4f2e; color: white; }
         .badge-enrollment { background: #6c9ebf; color: white; }
         
         .btn {
             display: inline-block;
             padding: 10px 25px;
-            background: #e6d9d0;
-            border: 1px solid #dacbc1;
-            color: #5a4a40;
+            background: #e4d0bf;
+            border: 1px solid #c9b5a5;
+            color: #3d2510;
             text-decoration: none;
             border-radius: 50px;
             transition: all 0.3s;
@@ -180,24 +180,24 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
         }
         
         .btn:hover {
-            background: #dccfc4;
+            background: #e0cfc0;
             transform: translateY(-2px);
         }
         
         .landing-register {
             text-align: center;
             margin-top: 40px;
-            color: #8a7163;
+            color: #6e4e3a;
         }
         
         .landing-register a {
-            color: #8b6b4d;
+            color: #7a4f2e;
             text-decoration: none;
             font-weight: bold;
         }
         
         .landing-register a:hover {
-            color: #5a4a40;
+            color: #3d2510;
             text-decoration: underline;
         }
         
@@ -206,17 +206,17 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             margin-top: 30px;
             padding: 18px;
             background: #faf6f2;
-            border: 1px solid #e9dfd7;
+            border: 1px solid #c9b5a5;
             border-radius: 16px;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
             font-size: 13px;
-            color: #5a4a40;
+            color: #3d2510;
         }
         
         .demo-credentials strong {
-            color: #5a4a40;
+            color: #3d2510;
         }
         
         .cred-row {
@@ -239,14 +239,14 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             font-weight: 600;
         }
         
-        .role-admin { background: #2c5f8a; color: white; }
-        .role-candidate { background: #8b6b4d; color: white; }
+        .role-admin { background: #1b4f78; color: white; }
+        .role-candidate { background: #7a4f2e; color: white; }
         .role-hr { background: #6c9ebf; color: white; }
         
         footer {
-            background: #e8ded5;
-            border-top: 1px solid #d6c9bf;
-            color: #8a7163;
+            background: #e4d0bf;
+            border-top: 1px solid #c9b5a5;
+            color: #6e4e3a;
             text-align: center;
             padding: 20px;
             margin-top: 40px;
@@ -285,7 +285,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             <div class="card-icon">📄</div>
             <h2>Recruitment Module</h2>
             <p>Υποβολή αιτήσεων, παρακολούθηση κατάστασης και διαχείριση προφίλ.</p>
-            <span class="module-badge badge-recruitment">👥 Υποψήφιοι & Αξιολογητές</span>
+            <span class="module-badge badge-recruitment">👥 Υποψήφιοι, Αξιολογητές & HR</span>
             <div class="btn">Είσοδος →</div>
         </div>
 
@@ -294,7 +294,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
             <div class="card-icon">📚</div>
             <h2>Enrollment Module</h2>
             <p>Συγχρονισμός ειδικών επιστημόνων με το LMS Moodle και αναφορές.</p>
-            <span class="module-badge badge-enrollment">🏢 HR & Διαχειριστές</span>
+            <span class="module-badge badge-enrollment">🏢 ΕΕ, HR & Διαχειριστές</span>
             <div class="btn">Είσοδος →</div>
         </div>
 

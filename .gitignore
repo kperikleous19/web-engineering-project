@@ -1,0 +1,9 @@
+# Database credentials — copy config.example.php to config.php and fill in your values
+includes/config.php
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp

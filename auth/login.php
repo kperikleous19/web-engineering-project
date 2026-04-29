@@ -9,30 +9,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt = $pdo->prepare("
+        SELECT u.*, COALESCE(r.role_name, u.role) AS effective_role
+        FROM users u
+        LEFT JOIN roles r ON u.role_id = r.id
+        WHERE u.email = :email
+    ");
     $stmt->execute(['email' => $email]);
 
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password_hash'])) {
 
+        session_regenerate_id(true);
+
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["username"] = $user["username"];
-        $_SESSION["role"] = $user["role"];
+        $_SESSION["role"] = strtolower($user["effective_role"] ?? $user["role"] ?? 'candidate');
 
-        switch ($user["role"]) {
+        switch ($_SESSION["role"]) {
             case "admin":
                 header("Location: ../admin/dashboard.php");
                 break;
             case "candidate":
             case "evaluator":
-                header("Location: ../recruitment/dashboard.php");
-                break;
             case "hr":
                 header("Location: ../enrollment/dashboard.php");
                 break;
+            case "ee":
+                header("Location: ../dashboard.php");
+                break;
             default:
-                header("Location: ../modules/dashboard.php");
+                header("Location: ../index.php");
         }
         exit;
 
@@ -84,4 +92,3 @@ $registered = isset($_GET['registered']) && $_GET['registered'] === '1';
 
 </body>
 </html>
-

@@ -1,10 +1,10 @@
 <?php
 session_start();
-require_once "../includes/db.php";
+require_once "includes/db.php";
 
 // If already logged in, redirect
 if (isset($_SESSION['user_id'])) {
-    header("Location: ../index.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -61,8 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $role = 'candidate'; // Default role for new registrations
 
         $stmt = $pdo->prepare("
-            INSERT INTO users (username, email, first_name, last_name, phone, password_hash, role_id) 
-            SELECT :username, :email, :first_name, :last_name, :phone, :password, id 
+            INSERT INTO users (username, email, first_name, last_name, phone, password_hash, role, role_id)
+            SELECT :username, :email, :first_name, :last_name, :phone, :password, :role, id
             FROM roles WHERE role_name = 'candidate'
         ");
 
@@ -72,7 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'first_name' => $first_name,
             'last_name' => $last_name,
             'phone' => $phone,
-            'password' => $hash
+            'password' => $hash,
+            'role' => $role
         ]);
 
         if ($result) {
@@ -103,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f0eb;
+            background: #ece4da;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -133,15 +134,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             border-radius: 28px;
             box-shadow: 0 12px 28px rgba(90, 70, 60, 0.08);
             overflow: hidden;
-            border: 1px solid #e9dfd7;
+            border: 1px solid #c9b5a5;
         }
 
         .register-header {
             background: #fffaf5;
-            color: #5a4a40;
+            color: #3d2510;
             padding: 35px 30px;
             text-align: center;
-            border-bottom: 1px solid #e9dfd7;
+            border-bottom: 1px solid #c9b5a5;
         }
 
         .register-header i {
@@ -159,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         .register-header p {
             font-size: 13px;
-            color: #8a7163;
+            color: #6e4e3a;
             margin: 0;
         }
 
@@ -212,8 +213,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .btn-register {
             width: 100%;
             padding: 14px;
-            background: #e6d9d0;
-            border: 1px solid #dacbc1;
+            background: #e4d0bf;
+            border: 1px solid #c9b5a5;
             color: #4d4038;
             border-radius: 50px;
             font-size: 15px;
@@ -225,7 +226,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         .btn-register:hover {
-            background: #dccfc4;
+            background: #e0cfc0;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(90, 70, 60, 0.12);
         }
@@ -324,7 +325,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <h1>Δημιουργία Λογαριασμού</h1>
                 <p>Εγγραφείτε στο Σύστημα Διαχείρισης Ειδικών Επιστημόνων ΤΕΠΑΚ</p>
             </div>
-            
+
             <div class="register-body">
                 <?php if ($success): ?>
                     <div class="alert-success">
@@ -392,14 +393,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </form>
 
                     <div class="login-link">
-                        <i class="fas fa-sign-in-alt"></i> Έχετε ήδη λογαριασμό; 
+                        <i class="fas fa-sign-in-alt"></i> Έχετε ήδη λογαριασμό;
                         <a href="login.php">Σύνδεση εδώ</a>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
-        
-        <a href="../index.php" class="back-home">
+
+        <a href="index.php" class="back-home">
             <i class="fas fa-arrow-left"></i> Επιστροφή στην Αρχική
         </a>
     </div>

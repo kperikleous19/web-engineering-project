@@ -7,18 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Database connection
-$host = "127.0.0.1";
-$dbname = "tepak_ee_db";
-$username = "root";
-$password = "oTem333!";
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
+require_once __DIR__ . "/db.php";
 
 // Helper function to check if user is logged in
 function isLoggedIn() {
@@ -65,9 +54,9 @@ function requireAnyRole($roles) {
 // Helper function to get user role name from database
 function getUserRole($pdo, $userId) {
     $stmt = $pdo->prepare("
-        SELECT r.role_name 
-        FROM users u 
-        JOIN roles r ON u.role_id = r.id 
+        SELECT r.role_name
+        FROM users u
+        JOIN roles r ON u.role_id = r.id
         WHERE u.id = ?
     ");
     $stmt->execute([$userId]);
